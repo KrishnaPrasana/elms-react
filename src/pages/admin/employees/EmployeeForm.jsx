@@ -47,24 +47,30 @@ export default function EmployeeForm({ mode }) {
 
     const handleSubmit = async () => {
         if (!form.name || !form.email || !form.empId || form.departmentIds.length === 0) {
-            notify("All fields are required","error");
+            notify("All fields are required", "error");
             return;
-    }
-    try{
-
-    
-        if (mode === "edit") {
-            await api.put(`/admin/employees/${id}`, form);
-            notify("Employee updated successfully");
-        } else {
-            await api.post(`/admin/employees`, form);
-            notify("Employee created successfully")
         }
-                 
-        navigate("/admin/employees/manage");
-    }catch(error){
-        notify(error,"error")
-    }
+        try {
+
+
+            if (mode === "edit") {
+                await api.put(`/admin/employees/${id}`, form);
+                notify("Employee updated successfully");
+            } else {
+                await api.post(`/admin/employees`, form);
+                notify("Employee created successfully")
+            }
+
+            navigate("/admin/employees/manage");
+        } catch (error) {
+            const message =
+                error.response?.data?.message ||   // backend message
+                error.message ||                   // axios message
+                "Request failed";
+
+            notify(message, "error");
+        }
+
     };
 
     return (

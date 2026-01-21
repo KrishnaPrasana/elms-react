@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Paper, Typography, TextField, Button, Box } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../../api/axiosConfig";
+import { useNotify } from "../../../context/NotificationContext";
 
 export default function LeaveTypeForm({ mode }) {
+    const { notify } = useNotify();
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -30,13 +32,33 @@ export default function LeaveTypeForm({ mode }) {
     };
 
     const handleSubmit = async () => {
-        if (!form.name || !form.maxDays) return;
+        if (!form.name || !form.maxDays) {
+            notify("All fields are required", "error");
+            return;
 
-        if (mode === "edit") {
-            await api.put(`/admin/leave-types/${id}`, form);
-        } else {
-            await api.post("/admin/leave-types", form);
         }
+        try {
+
+
+            if (mode === "edit") {
+                await api.put(`/admin/leave-types/${id}`, form);
+                notify("Leave Type updated successfully");
+            } else {
+                await api.post("/admin/leave-types", form);
+                notify("Leave Type created successfully");
+
+            }
+
+        } catch (error) {
+            const message =
+                error.response?.data?.message ||   // backend message
+                error.message ||                   // axios message
+                "Request failed";
+
+            notify(message, "error");
+        }
+
+
 
         navigate("/admin/leave-types/manage");
     };

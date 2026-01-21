@@ -30,7 +30,7 @@ export default function ManageEmployees() {
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm("Delete this leave type?")) return;
+        if (!window.confirm("Delete this Employee?")) return;
         await api.delete(`/admin/leave-types/${id}`);
         fetchEmployees();
     };

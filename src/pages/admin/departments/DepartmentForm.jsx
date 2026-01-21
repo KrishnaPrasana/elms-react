@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Paper, Typography, TextField, Button, Box } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../../api/axiosConfig";
+import { useNotify } from "../../../context/NotificationContext";
 
 export default function DepartmentForm({ mode }) {
+    const {notify} = useNotify();
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -29,12 +31,27 @@ export default function DepartmentForm({ mode }) {
     };
 
     const handleSubmit = async () => {
-        if (!form.name || !form.shortName) return;
+        if (!form.name || !form.shortName) {
+            notify("All fields are required", "error");
+            return;
 
-        if (mode === "edit") {
-            await api.put(`/admin/departments/${id}`, form);
-        } else {
-            await api.post("/admin/departments", form);
+        }
+        try {
+            if (mode === "edit") {
+                await api.put(`/admin/departments/${id}`, form);
+                notify("Department updated successfully");
+            } else {
+                await api.post("/admin/departments", form);
+                notify("Department created successfully");
+            }
+
+        } catch (error) {
+            const message =
+                error.response?.data?.message ||   // backend message
+                error.message ||                   // axios message
+                "Request failed";
+
+            notify(message, "error");
         }
 
         navigate("/admin/departments/manage");
