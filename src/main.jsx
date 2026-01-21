@@ -8,6 +8,7 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import theme from "./theme";
 
 import "./index.css";
+import { NotificationProvider } from "./context/NotificationContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -16,7 +17,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
       <BrowserRouter>
         <AuthProvider>
+          <NotificationProvider>
           <App />
+          </NotificationProvider>
         </AuthProvider>
       </BrowserRouter>
 

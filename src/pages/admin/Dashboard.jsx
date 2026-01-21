@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import {
     Box,
     Grid,
@@ -21,6 +22,7 @@ export default function Dashboard() {
     const [stats, setStats] = useState({
         totalEmployees: 0,
         totalLeaves: 0,
+        totalLeaveTypes: 0,
         pending: 0,
         approved: 0,
         rejected: 0,
@@ -60,9 +62,10 @@ export default function Dashboard() {
                     // justifyContent: "space-between",
                 }}
             >
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card elevation={3} sx={{ height: 120, width: 300 }}>
-                        <CardActionArea sx={{ height: "100%" }}>
+                <Grid item xs={12} sm={6} md={4}>
+                    <Card elevation={3} sx={{ height: 120 ,width:250}}>
+                        <CardActionArea component={NavLink}
+                             to="/admin/employees/manage" sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
                                     Total Employees
@@ -75,9 +78,10 @@ export default function Dashboard() {
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card elevation={3} sx={{ height: 120, width: 300 }}>
-                        <CardActionArea sx={{ height: "100%" }}>
+                <Grid item xs={12} sm={6} md={4}>
+                    <Card elevation={3} sx={{ height: 120 ,width:250}}>
+                        <CardActionArea component={NavLink}
+                            to="/admin/departments/manage" sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
                                     Listed Departments
@@ -89,9 +93,25 @@ export default function Dashboard() {
                         </CardActionArea>
                     </Card>
                 </Grid>
+                
+                <Grid item xs={12} sm={6} md={4}>
+                    <Card elevation={3} sx={{ height: 120 ,width:250}}>
+                        <CardActionArea component={NavLink}
+                            to="/admin/leave-types/manage" sx={{ height: "100%" }}>
+                            <CardContent>
+                                <Typography variant="subtitle2" color="textSecondary">
+                                    Listed Leave Types
+                                </Typography>
+                                <Typography variant="h4" fontWeight={700}>
+                                    {stats.totalLeaveTypes}
+                                </Typography>
+                            </CardContent>
+                        </CardActionArea>
+                    </Card>
+                </Grid>
 
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card elevation={3} sx={{ height: 120, width: 300 }}>
+                <Grid item xs={12} sm={6} md={4}>
+                    <Card elevation={3} sx={{ height: 120,width:250}}>
                         <CardActionArea sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
@@ -105,8 +125,8 @@ export default function Dashboard() {
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={3}>
-                    <Card elevation={3} sx={{ height: 120, width: 300 }}>
+                <Grid item xs={12} sm={6} md={4}>
+                    <Card elevation={3} sx={{ height: 120 ,width:250}}>
                         <CardActionArea sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
