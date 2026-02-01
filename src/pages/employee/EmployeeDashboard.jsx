@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import api from "../../api/axiosConfig";
 
-export default function Dashboard() {
+export default function EmployeeDashboard() {
     const [stats, setStats] = useState({
         totalEmployees: 0,
         totalLeaves: 0,
@@ -63,12 +63,14 @@ export default function Dashboard() {
                 }}
             >
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card elevation={3} sx={{ height: 120 ,width:250}}>
-                        <CardActionArea component={NavLink}
-                             to="/admin/employees/manage" sx={{ height: "100%" }}>
+                    <Card elevation={3} sx={{ height: 120, width: 250 }}>
+                        <CardActionArea 
+                        // component={NavLink}
+                        //     to="/admin/employees/manage" 
+                            sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
-                                    Total Employees
+                                    Total Leaves
                                 </Typography>
                                 <Typography variant="h4" fontWeight={700}>
                                     {stats.totalEmployees}
@@ -79,28 +81,32 @@ export default function Dashboard() {
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card elevation={3} sx={{ height: 120 ,width:250}}>
-                        <CardActionArea component={NavLink}
-                            to="/admin/departments/manage" sx={{ height: "100%" }}>
+                    <Card elevation={3} sx={{ height: 120, width: 250 }}>
+                        <CardActionArea
+                        //  component={NavLink}
+                        //     to="/admin/departments/manage" 
+                            sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
-                                    Listed Departments
+                                    Approved Leaves
                                 </Typography>
                                 <Typography variant="h4" fontWeight={700}>
-                                    {stats.totalDepartments}
+                                    {/* {stats.totalDepartments} */}0
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
                     </Card>
                 </Grid>
-                
+
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card elevation={3} sx={{ height: 120 ,width:250}}>
-                        <CardActionArea component={NavLink}
-                            to="/admin/leave-types/manage" sx={{ height: "100%" }}>
+                    <Card elevation={3} sx={{ height: 120, width: 250 }}>
+                        <CardActionArea 
+                        // component={NavLink}
+                        //     to="/admin/leave-types/manage"
+                             sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
-                                    Listed Leave Types
+                                    New Leave Applications
                                 </Typography>
                                 <Typography variant="h4" fontWeight={700}>
                                     {stats.totalLeaveTypes}
@@ -110,35 +116,7 @@ export default function Dashboard() {
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card elevation={3} sx={{ height: 120,width:250}}>
-                        <CardActionArea sx={{ height: "100%" }}>
-                            <CardContent>
-                                <Typography variant="subtitle2" color="textSecondary">
-                                    Total Leave Applications
-                                </Typography>
-                                <Typography variant="h4" fontWeight={700}>
-                                    {stats.totalLeaves}
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
 
-                <Grid item xs={12} sm={6} md={4}>
-                    <Card elevation={3} sx={{ height: 120 ,width:250}}>
-                        <CardActionArea sx={{ height: "100%" }}>
-                            <CardContent>
-                                <Typography variant="subtitle2" color="textSecondary">
-                                    New Leave Applications
-                                </Typography>
-                                <Typography variant="h4" fontWeight={700}>
-                                    {stats.newLeaveApplications}
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                    </Card>
-                </Grid>
             </Grid>
 
 

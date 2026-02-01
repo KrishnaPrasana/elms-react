@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import {
+    Outlet, NavLink, useNavigate
+} from "react-router-dom";
 import {
     Box,
     Drawer,
@@ -24,15 +26,29 @@ import LockIcon from "@mui/icons-material/Lock";
 import AddIcon from "@mui/icons-material/Add";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNotify } from "../../context/NotificationContext";
 
 const drawerWidthOpen = 240;
 const drawerWidthClosed = 70;
 
 export default function AdminLayout() {
+    const navigate = useNavigate();
+    const { notify } = useNotify();
     const [open, setOpen] = useState(true);
     const [leaveOpen, setLeaveOpen] = useState(false);
     const [departmentOpen, setDepartmentOpen] = useState(false);
     const [employeeOpen, setEmployeeOpen] = useState(false);
+
+
+    const handleLogout = async () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
+        notify("Logged out successfully");
+
+        navigate("/login")
+    }
 
 
     return (
@@ -169,6 +185,12 @@ export default function AdminLayout() {
                         <ListItemIcon><LockIcon /></ListItemIcon>
                         {open && <ListItemText primary="Change Password" />}
                     </ListItemButton>
+
+                    <ListItemButton onClick={handleLogout}>
+                        <ListItemIcon><LogoutIcon /></ListItemIcon>
+                        {open && <ListItemText primary="Logout" />}
+                    </ListItemButton>
+
                 </List>
             </Drawer>
 
@@ -180,7 +202,7 @@ export default function AdminLayout() {
                 sx={{
                     flexGrow: 1,
                     px: 2,
-                    width: "100vh",
+                    width: "100%",
                     maxWidth: "100%",   // ⬅️ CRITICAL
                     overflowX: "hidden"
                 }}

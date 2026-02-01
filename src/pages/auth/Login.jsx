@@ -53,7 +53,7 @@ export default function Login() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#ffffffff",
+                backgroundColor: "#f5f7fa",
             }}
         >
             <Paper

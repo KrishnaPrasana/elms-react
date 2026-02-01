@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
             // Redirect after login based on role
             if (userData.role === "admin") navigate("/admin/dashboard");
-            else navigate("/employee/profile");
+            else navigate("/employee/dashboard");
         } catch (err) {
             throw err;
         }

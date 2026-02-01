@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import Login from "../pages/auth/Login";
 import AdminLayout from "../components/Layout/AdminLayout";
-import Dashboard from "../pages/admin/Dashboard";
+import AdminDashboard from "../pages/admin/AdminDashboard";
 import ManageLeaveTypes from "../pages/admin/leave-types/ManageLeaveTypes";
 import LeaveTypeForm from "../pages/admin/leave-types/LeaveTypeForm";
 import DepartmentForm from "../pages/admin/departments/DepartmentForm";
@@ -12,6 +12,8 @@ import ManageDepartments from "../pages/admin/departments/ManageDepartments";
 import EmployeeForm from "../pages/admin/employees/EmployeeForm";
 import ManageEmployees from "../pages/admin/employees/ManageEmployees";
 import ChangePassword from "../pages/auth/ChangePassword";
+import EmployeeLayout from "../components/Layout/EmployeeLayout";
+import EmployeeDashboard from "../pages/employee/EmployeeDashboard";
 
 export default function AppRouter() {
     const { user, loading } = useContext(AuthContext);
@@ -28,7 +30,7 @@ export default function AppRouter() {
             {/* ADMIN ROUTES */}
             <Route path="/admin" element={<Protected> <AdminLayout /> </Protected>}>
                 {/* NESTED admin screens */}
-                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
 
 
                 <Route path="leave-types">
@@ -48,19 +50,19 @@ export default function AppRouter() {
                     <Route path="edit/:id" element={<EmployeeForm mode="edit" />} />
                     <Route path="manage" element={<ManageEmployees />} />
                 </Route>
-                <Route path="change-password" element = {<ChangePassword/>}/>
+                <Route path="change-password" element={<ChangePassword />} />
                 {/* Add more screens here later */}
             </Route>
 
             {/* EMPLOYEE ROUTES */}
             <Route
                 path="/employee"
-                element={
-                    <Protected>
-                        <div>Employee Panel (placeholder)</div>
-                    </Protected>
-                }
-            />
+                element={ <Protected> <EmployeeLayout />  </Protected>} >
+
+                <Route path="dashboard" element={<EmployeeDashboard/>}/>
+                <Route path="change-password" element={<ChangePassword />} />
+
+            </Route>
 
             {/* DEFAULT REDIRECT */}
             <Route path="*" element={<Navigate to="/login" />} />

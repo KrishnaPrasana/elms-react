@@ -45,7 +45,6 @@ const theme = createTheme({
         MuiTextField: {
             defaultProps: {
                 variant: "filled",
-                margin: "normal",
                 size: "medium",
             },
         },
@@ -54,15 +53,14 @@ const theme = createTheme({
             defaultProps: {
                 variant: "filled",
                 size: "medium",
-                margin: "none",
 
             }
         },
 
         MuiFormControl: {
             defaultProps: {
-                variant: "filled"
-            }
+                variant: "filled",
+                size: "medium",}
         },
 
         /* ✅ Button */
