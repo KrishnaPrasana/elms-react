@@ -11,6 +11,7 @@ import DepartmentForm from "../pages/admin/departments/DepartmentForm";
 import ManageDepartments from "../pages/admin/departments/ManageDepartments";
 import EmployeeForm from "../pages/admin/employees/EmployeeForm";
 import ManageEmployees from "../pages/admin/employees/ManageEmployees";
+import ChangePassword from "../pages/auth/ChangePassword";
 
 export default function AppRouter() {
     const { user, loading } = useContext(AuthContext);
@@ -47,6 +48,7 @@ export default function AppRouter() {
                     <Route path="edit/:id" element={<EmployeeForm mode="edit" />} />
                     <Route path="manage" element={<ManageEmployees />} />
                 </Route>
+                <Route path="change-password" element = {<ChangePassword/>}/>
                 {/* Add more screens here later */}
             </Route>
 

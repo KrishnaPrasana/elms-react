@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import api from "../../../api/axiosConfig";
 import { Paper, Typography, TextField, Button, Box, MenuItem, FormControl, InputLabel, Select, Chip } from "@mui/material";
 import { useNotify } from "../../../context/NotificationContext";
+import {createEmployee,updateEmployee,getEmployee}from "../../../api/employee";
 
 
 export default function EmployeeForm({ mode }) {
@@ -32,7 +33,7 @@ export default function EmployeeForm({ mode }) {
     };
 
     const loadEmployee = async () => {
-        const res = await api.get(`/admin/employees/${id}`);
+        const res = await getEmployee(id);
         setForm(res.data);
     };
 
@@ -54,10 +55,10 @@ export default function EmployeeForm({ mode }) {
 
 
             if (mode === "edit") {
-                await api.put(`/admin/employees/${id}`, form);
+                await updateEmployee(id,form);
                 notify("Employee updated successfully");
             } else {
-                await api.post(`/admin/employees`, form);
+                await createEmployee(form);
                 notify("Employee created successfully")
             }
 

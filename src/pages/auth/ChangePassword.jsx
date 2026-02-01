@@ -7,14 +7,41 @@ import {
   Card,
   CardContent,
   Alert,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import api from "../../api/axiosConfig";
+import { changePassword } from "../../api/common";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function ChangePassword() {
   const [form, setForm] = useState({
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
+  });
+
+  const [showPassword, setShowPassword] = useState({
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false,
+  });
+  const toggle = (field) => {
+    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const passwordProps = (field) => ({
+    type: showPassword[field] ? "text" : "password",
+
+    InputProps: {
+      endAdornment: (
+        <InputAdornment position="end">
+          <IconButton onClick={() => toggle(field)} edge="end">
+            {showPassword[field] ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </InputAdornment>
+      ),
+    },
   });
 
   const [message, setMessage] = useState("");
@@ -34,10 +61,7 @@ export default function ChangePassword() {
     }
 
     try {
-      const res = await api.put("/admin/change-password", {
-        currentPassword: form.currentPassword,
-        newPassword: form.newPassword,
-      });
+      const res = await changePassword(form);
 
       setMessage(res.data.message);
       setForm({
@@ -70,8 +94,12 @@ export default function ChangePassword() {
               margin="normal"
               value={form.currentPassword}
               onChange={handleChange}
-              required
+              required 
+              {
+                ...passwordProps("currentPassword")
+              }
             />
+
 
             <TextField
               label="New Password"
@@ -82,6 +110,9 @@ export default function ChangePassword() {
               value={form.newPassword}
               onChange={handleChange}
               required
+              {
+                ...passwordProps("newPassword")
+              }
             />
 
             <TextField
@@ -93,14 +124,12 @@ export default function ChangePassword() {
               value={form.confirmPassword}
               onChange={handleChange}
               required
+              {
+                ...passwordProps("confirmPassword")
+              }
             />
 
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              sx={{ mt: 2 }}
-            >
+            <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
               Update Password
             </Button>
           </Box>

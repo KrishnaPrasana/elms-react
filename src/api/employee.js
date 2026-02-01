@@ -1,4 +1,4 @@
 import api from "./axiosConfig";
-
-export const applyLeave = (data) => api.post("/employee/apply-leave", data);
-export const getHistory = () => api.get("/employee/leave-history");
+export const createEmployee = (data) => api.post("/admin/employees",data);
+export const updateEmployee = (id,data) => api.post(`/admin/employees/${id}`,data);
+export const getEmployee = (id) => api.post(`/admin/employees/${id}`);
