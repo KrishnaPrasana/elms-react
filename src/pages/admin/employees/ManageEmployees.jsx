@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import api from "../../../api/axiosConfig";
+import {getEmployees} from "../../../api/employee"
 
 export default function ManageEmployees() {
     const [rows, setRows] = useState([]);
@@ -25,7 +26,7 @@ export default function ManageEmployees() {
     }, []);
 
     const fetchEmployees = async () => {
-        const res = await api.get("/admin/employees");
+        const res = await getEmployees();
         setRows(res.data.employees);
     };
 

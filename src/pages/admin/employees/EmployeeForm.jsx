@@ -151,7 +151,6 @@ export default function EmployeeForm({ mode }) {
                     </LocalizationProvider>
                 </Grid>
 
-                {/* ✅ Department INCLUDED INSIDE GRID */}
                 <Grid item xs={12} md={6}>
                     <FormControl fullWidth variant="filled" sx={{minWidth:230}}>
                         <InputLabel id="department-label">Departments</InputLabel>
