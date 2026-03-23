@@ -86,6 +86,8 @@ export default function AppRouter() {
           <Route path="apply" element={<LeaveApplyForm mode="add" />} />
           <Route path="history" element={<LeaveHistory />} />
         </Route>
+
+        <Route path="profile" element={<EmployeeForm mode="edit" />} />
       </Route>
 
       {/* DEFAULT REDIRECT */}

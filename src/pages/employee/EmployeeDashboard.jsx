@@ -17,15 +17,13 @@ import {
     CardActionArea,
 } from "@mui/material";
 import api from "../../api/axiosConfig";
+import { getDashboard } from "../../api/employee";
 
 export default function EmployeeDashboard() {
     const [stats, setStats] = useState({
-        totalEmployees: 0,
         totalLeaves: 0,
-        totalLeaveTypes: 0,
-        pending: 0,
-        approved: 0,
-        rejected: 0,
+        approvedLeaves: 0,
+        newLeaveApplications: 0,
     });
 
     const [recent, setRecent] = useState([]);
@@ -37,7 +35,7 @@ export default function EmployeeDashboard() {
 
     const loadDashboard = async () => {
         try {
-            const res = await api.get("/admin/dashboard");
+            const res = await getDashboard();
             setStats(res.data.stats);
             setRecent(res.data.recent);
         } catch (err) {
@@ -65,15 +63,15 @@ export default function EmployeeDashboard() {
                 <Grid item xs={12} sm={6} md={4}>
                     <Card elevation={3} sx={{ height: 120, width: 250 }}>
                         <CardActionArea 
-                        // component={NavLink}
-                        //     to="/admin/employees/manage" 
+                        component={NavLink}
+                            to="/employee/leaves/history" 
                             sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
                                     Total Leaves
                                 </Typography>
                                 <Typography variant="h4" fontWeight={700}>
-                                    {stats.totalEmployees}
+                                    {stats.totalLeaves}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -83,15 +81,15 @@ export default function EmployeeDashboard() {
                 <Grid item xs={12} sm={6} md={4}>
                     <Card elevation={3} sx={{ height: 120, width: 250 }}>
                         <CardActionArea
-                        //  component={NavLink}
-                        //     to="/admin/departments/manage" 
+                         component={NavLink}
+                            to="/employee/leaves/history?status=approved" 
                             sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
                                     Approved Leaves
                                 </Typography>
                                 <Typography variant="h4" fontWeight={700}>
-                                    {/* {stats.totalDepartments} */}0
+                                    {stats.approvedLeaves}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -101,15 +99,15 @@ export default function EmployeeDashboard() {
                 <Grid item xs={12} sm={6} md={4}>
                     <Card elevation={3} sx={{ height: 120, width: 250 }}>
                         <CardActionArea 
-                        // component={NavLink}
-                        //     to="/admin/leave-types/manage"
+                        component={NavLink}
+                            to="/employee/leaves/history?status=pending" 
                              sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
                                     New Leave Applications
                                 </Typography>
                                 <Typography variant="h4" fontWeight={700}>
-                                    {stats.totalLeaveTypes}
+                                    {stats.newLeaveApplications}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
@@ -130,7 +128,7 @@ export default function EmployeeDashboard() {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Employee</TableCell>
+                               
                                 <TableCell>Leave Type</TableCell>
                                 <TableCell>Dates</TableCell>
                                 <TableCell>Status</TableCell>
@@ -147,7 +145,7 @@ export default function EmployeeDashboard() {
                             ) : (
                                 recent.map((row) => (
                                     <TableRow key={row.id}>
-                                        <TableCell>{row.employeeName}</TableCell>
+                                        
                                         <TableCell>{row.leaveType}</TableCell>
                                         <TableCell>
                                             {row.fromDate} — {row.toDate}

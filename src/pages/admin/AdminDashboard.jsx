@@ -17,6 +17,7 @@ import {
     CardActionArea,
 } from "@mui/material";
 import api from "../../api/axiosConfig";
+import { getDashboard } from "../../api/admin";
 
 export default function AdminDashboard() {
     const [stats, setStats] = useState({
@@ -37,7 +38,7 @@ export default function AdminDashboard() {
 
     const loadDashboard = async () => {
         try {
-            const res = await api.get("/admin/dashboard");
+            const res = await getDashboard();
             setStats(res.data.stats);
             setRecent(res.data.recent);
         } catch (err) {
@@ -112,7 +113,8 @@ export default function AdminDashboard() {
 
                 <Grid item xs={12} sm={6} md={4}>
                     <Card elevation={3} sx={{ height: 120,width:250}}>
-                        <CardActionArea sx={{ height: "100%" }}>
+                        <CardActionArea component={NavLink}
+                        to="/admin/employees/leaves/history" sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
                                     Total Leave Applications
@@ -127,7 +129,8 @@ export default function AdminDashboard() {
 
                 <Grid item xs={12} sm={6} md={4}>
                     <Card elevation={3} sx={{ height: 120 ,width:250}}>
-                        <CardActionArea sx={{ height: "100%" }}>
+                        <CardActionArea component={NavLink}
+                        to="/admin/employees/leaves/history?status=pending" sx={{ height: "100%" }}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="textSecondary">
                                     New Leave Applications

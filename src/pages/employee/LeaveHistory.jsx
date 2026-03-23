@@ -4,21 +4,27 @@ import { Box, Typography, Button, TextField, Paper } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function LeaveHistory() {
   const [rows, setRows] = useState([]);
   const [search, setSearch] = useState("");
+
+  const location = useLocation();
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchLeaves();
-  }, []);
+    const queryParams = new URLSearchParams(location.search);
+    const status = queryParams.get("status");
 
-  const fetchLeaves = async () => {
-    const res = await getLeaveApplications();
+    fetchLeaves(status);
+  }, [location.search]);
+
+  const fetchLeaves = async (status) => {
+    const res = await getLeaveApplications(status ? { status } : {});
     setRows(res.data);
-    console.log(res.data);
   };
 
   const filteredRows = rows.filter(
@@ -79,24 +85,24 @@ export default function LeaveHistory() {
   const adminColumn =
     role === "admin"
       ? [
-          {
-            field: "actions",
-            headerName: "Actions",
-            width: 180,
-            sortable: false,
-            renderCell: (params) => (
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() =>
-                  navigate(`/admin/employees/leaves/details/${params.row.id}`)
-                }
-              >
-                View Details
-              </Button>
-            ),
-          },
-        ]
+        {
+          field: "actions",
+          headerName: "Actions",
+          width: 180,
+          sortable: false,
+          renderCell: (params) => (
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() =>
+                navigate(`/admin/employees/leaves/details/${params.row.id}`)
+              }
+            >
+              View Details
+            </Button>
+          ),
+        },
+      ]
       : [];
 
   const columns = [...baseColumns, ...adminColumn];

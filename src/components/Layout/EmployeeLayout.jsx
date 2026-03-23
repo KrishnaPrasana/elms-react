@@ -95,7 +95,7 @@ export default function EmployeeLayout() {
           </ListItemButton>
 
           <ListItemButton
-          //   component={NavLink} to="/admin/change-password"
+            component={NavLink} to="/employee/profile/"
           >
             <ListItemIcon>
               <AccountCircleIcon />
