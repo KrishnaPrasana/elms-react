@@ -10,11 +10,14 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
 import api from "../../../api/axiosConfig";
-import {getEmployees} from "../../../api/employee"
+import { getEmployees } from "../../../api/employee"
+import { updateEmployeeStatus } from "../../../api/employee";
+import Tooltip from "@mui/material/Tooltip";
 
 export default function ManageEmployees() {
     const [rows, setRows] = useState([]);
@@ -27,19 +30,33 @@ export default function ManageEmployees() {
 
     const fetchEmployees = async () => {
         const res = await getEmployees();
-        setRows(res.data.employees);
+
+        const formatted = res.data.employees.map(emp => ({
+            ...emp,
+            department: emp.Departments?.map(d => d.name).join(", ") || "",
+            status: emp.status || "inactive"
+        }));
+
+        setRows(formatted);
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("Delete this Employee?")) return;
-        await api.delete(`/admin/leave-types/${id}`);
+    const handleToggleStatus = async (row) => {
+        const newStatus = row.status === "active" ? "inactive" : "active";
+
+        if (!window.confirm(`Mark this employee as ${newStatus}?`)) return;
+        await updateEmployeeStatus(row.id, { status: newStatus });
+
         fetchEmployees();
     };
 
     // Search filter
     const filteredRows = rows.filter((row) =>
         row.name.toLowerCase().includes(search.toLowerCase()) ||
-        (row.empId || "").toLowerCase().includes(search.toLowerCase())
+        (row.empId || "").toLowerCase().includes(search.toLowerCase()) ||
+        (row.department || "").toLowerCase().includes(search.toLowerCase()) ||
+        (row.status || "").toLowerCase().includes(search.toLowerCase()) ||
+        (row.email || "").toLowerCase().includes(search.toLowerCase())
+
     );
 
     const columns = [
@@ -52,31 +69,75 @@ export default function ManageEmployees() {
                 params.api.getRowIndexRelativeToVisibleRows(params.id) + 1,
         },
         { field: "name", headerName: "Employee Name", flex: 1 },
-        { field: "empId", headerName: "Employee ID", flex: 1.5 },
-        { field: "email", headerName: "Email", width: 120 },
+        { field: "empId", headerName: "Employee ID", flex: 1 },
+        { field: "email", headerName: "Email", flex: 2 },
+        {
+            field: "status",
+            headerName: "Status",
+            width: 120,
+            renderCell: (params) => {
+                const isActive = params.value === "active";
+
+                return (
+                    <span style={{
+                        color: isActive ? "green" : "red",
+                        fontWeight: 500
+                    }}>
+                        {isActive ? "Active" : "Inactive"}
+                    </span>
+                );
+            }
+        },
+        {
+            field: "department",
+            headerName: "Department",
+            flex: 1,
+            renderCell: (params) => (
+                <div>
+                    {params.value.split(", ").map((dep, i) => (
+                        <span key={i} style={{
+                            background: "#e0f2f1",
+                            padding: "2px 6px",
+                            marginRight: 4,
+                            borderRadius: 4,
+                            fontSize: 12
+                        }}>
+                            {dep}
+                        </span>
+                    ))}
+                </div>
+            )
+        },
         {
             field: "actions",
             headerName: "Actions",
-            width: 150,
+            width: 180,
             sortable: false,
-            renderCell: (params) => (
-                <>
-                    <IconButton
-                        color="primary"
-                        onClick={() =>
-                            navigate(`/admin/employees/edit/${params.row.id}`)
-                        }
-                    >
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton
-                        color="error"
-                        onClick={() => handleDelete(params.row.id)}
-                    >
-                        <DeleteIcon />
-                    </IconButton>
-                </>
-            ),
+            renderCell: (params) => {
+                const isActive = params.row.status === "active";
+
+                return (
+                    <>
+                        <IconButton
+                            color="primary"
+                            onClick={() =>
+                                navigate(`/admin/employees/edit/${params.row.id}`)
+                            }
+                        >
+                            <EditIcon />
+                        </IconButton>
+
+                        <Tooltip title={isActive ? "Deactivate" : "Activate"}>
+                            <IconButton
+                                color={isActive ? "error" : "success"}
+                                onClick={() => handleToggleStatus(params.row)}
+                            >
+                                {isActive ? <PersonOffIcon /> : <CheckCircleIcon />}
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                );
+            },
         },
     ];
 
